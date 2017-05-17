@@ -21,7 +21,7 @@ use Doctrine\Common\Persistence\Proxy;
  * Class SensorData
  *
  * @package App\Services\Rest
- * @author  TLe, Tarmo Leppänen <tarmo.leppanen@protacon.com>
+ * @author  Jukka Tainio <jukka@tainio.fi>
  *
  * @method  Repository      getRepository(): Repository
  * @method  Proxy|Entity    getReference(string $id): Proxy

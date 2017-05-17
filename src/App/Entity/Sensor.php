@@ -18,7 +18,26 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
-
+/**
+ * Sensor
+ *
+ * @ORM\Table(
+ *      name="sensor",
+ *      indexes={
+ *          @ORM\Index(name="created_by_id", columns={"created_by_id"}),
+ *          @ORM\Index(name="updated_by_id", columns={"updated_by_id"}),
+ *          @ORM\Index(name="deleted_by_id", columns={"deleted_by_id"}),
+ *      }
+ *  )
+ * @ORM\Entity(
+ *      repositoryClass="App\Repository\Sensor",
+ *  )
+ *
+ * @JMS\XmlRoot("sensor")
+ *
+ * @package App\Entity
+ * @author Jukka Tainio <jukka@tainio.fi>
+ */
 
 class Sensor implements EntityInterface
 {
@@ -93,7 +112,7 @@ class Sensor implements EntityInterface
      * @ORM\Column(
      *      name="name",
      *      type="string",
-     *      lenght=255,
+     *      length=255,
      *  )
      */
     private $name;
@@ -133,7 +152,7 @@ class Sensor implements EntityInterface
      * @JMS\Type("string")
      *
      * @ORM\Column(
-     *      name="description",
+     *      name="ip",
      *      type="string",
      *      length=255,
      *  )
@@ -154,7 +173,7 @@ class Sensor implements EntityInterface
      * @JMS\Type("string")
      *
      * @ORM\Column(
-     *      name="description",
+     *      name="snmp_oid",
      *      type="string",
      *      length=255,
      *  )

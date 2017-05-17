@@ -19,7 +19,26 @@ use JMS\Serializer\Annotation as JMS;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
-
+/**
+ * SensorData
+ *
+ * @ORM\Table(
+ *      name="sensordata",
+ *      indexes={
+ *          @ORM\Index(name="created_by_id", columns={"created_by_id"}),
+ *          @ORM\Index(name="updated_by_id", columns={"updated_by_id"}),
+ *          @ORM\Index(name="deleted_by_id", columns={"deleted_by_id"}),
+ *      }
+ *  )
+ * @ORM\Entity(
+ *      repositoryClass="App\Repository\SensorData",
+ *  )
+ *
+ * @JMS\XmlRoot("sensordata")
+ *
+ * @package App\Entity
+ * @author Jukka Tainio <jukka@tainio.fi>
+ */
 class SensorData implements EntityInterface
 {
     // Traits
@@ -58,14 +77,16 @@ class SensorData implements EntityInterface
      *  })
      * @ORM\ManyToOne(
      *      targetEntity="App\Entity\Sensor",
-     *      mappedBy="id",
+     *      inversedBy="id",
+     *      cascade={"all"},
      *  )
+     *
      * @JMS\XmlList(entry = "SensorData")
      *
      * @ORM\Column(
      *      name="sensorid",
      *      type="string",
-     *      lenght=255,
+     *      length=255,
      *  )
      */
     private $sensorid;
@@ -97,12 +118,12 @@ class SensorData implements EntityInterface
      * @JMS\Groups({
      *      "Default",
      *      "SensorData",
-     *      "SensorData.timestamp",
+     *      "SensorData.stamp",
      *  })
      * @JMS\Type("datetime")
      *
      * @ORM\Column(
-     *      name="value",
+     *      name="stamp",
      *      type="datetime",
      *  )
      */

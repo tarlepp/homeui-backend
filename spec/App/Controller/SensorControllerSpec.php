@@ -17,7 +17,7 @@ use PhpSpec\ObjectBehavior;
 use PhpSpec\Wrapper\Collaborator;
 
 /**
- * Class AuthorControllerSpec
+ * Class SensorControllerSpec
  *
  * @mixin SensorController
  *
