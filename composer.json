@@ -1,0 +1,110 @@
+{
+    "name": "tarlepp/symfony-backend",
+    "description": "Simple JSON API which is build on top of Symfony framework",
+    "type": "project",
+    "keywords": [
+        "php",
+        "symfony",
+        "REST",
+        "JSON"
+    ],
+    "homepage": "https://github.com/tarlepp/symfony-backend",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tarmo Leppänen",
+            "homepage": "https://github.com/tarlepp",
+            "role": "developer"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/tarlepp/symfony-backend/issues"
+    },
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        },
+        "classmap": [
+            "app/AppKernel.php",
+            "app/AppCache.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "php": ">=7.0.0",
+        "doctrine/doctrine-bundle": "1.6.7",
+        "doctrine/doctrine-cache-bundle": "1.3.0",
+        "doctrine/doctrine-migrations-bundle": "1.2.1",
+        "doctrine/orm": "2.5.6",
+        "gesdinet/jwt-refresh-token-bundle": "0.2.0",
+        "gfreeau/get-jwt-bundle": "2.0.x-dev",
+        "incenteev/composer-parameter-handler": "2.1.2",
+        "jms/serializer-bundle": "1.4.0",
+        "knplabs/doctrine-behaviors": "1.4.0",
+        "lexik/jwt-authentication-bundle": "2.3.0",
+        "matthiasnoback/symfony-console-form": "2.3.0",
+        "nelmio/api-doc-bundle": "dev-master",
+        "nelmio/cors-bundle": "1.5.1",
+        "piwik/device-detector": "3.7.7",
+        "ramsey/uuid": "3.6.1",
+        "sensio/distribution-bundle": "5.0.x-dev",
+        "sensio/framework-extra-bundle": "3.0.25",
+        "symfony/monolog-bundle": "3.1.0",
+        "symfony/swiftmailer-bundle": "2.5.4",
+        "symfony/symfony": "3.3.x-dev",
+        "roave/security-advisories": "dev-master"
+    },
+    "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "2.3.0",
+        "phpspec/phpspec": "3.2.3",
+        "phpunit/phpunit": "6.0.8",
+        "satooshi/php-coveralls": "1.0.1",
+        "sensio/generator-bundle": "3.1.4",
+        "squizlabs/php_codesniffer": "2.8.1",
+        "symfony/phpunit-bridge": "3.3.x-dev"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/tarlepp/symfony-backend"
+        }
+    ],
+    "scripts": {
+        "post-install-cmd": [
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
+        ],
+        "post-update-cmd": [
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
+        ]
+    },
+    "config": {
+        "platform": {
+            "php": "7.0.0"
+        }
+    },
+    "extra": {
+        "symfony-app-dir": "app",
+        "symfony-bin-dir": "bin",
+        "symfony-var-dir": "var",
+        "symfony-web-dir": "web",
+        "symfony-tests-dir": "tests",
+        "symfony-assets-install": "relative",
+        "incenteev-parameters": {
+            "file": "app/config/parameters.yml"
+        }
+    }
+}

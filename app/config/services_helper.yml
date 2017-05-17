@@ -1,0 +1,15 @@
+# Helper service configurations
+#
+# This file contains helper service specified configurations.
+services:
+    app.services.helper.roles:
+        class: App\Services\Helper\Roles
+        arguments: [ '%security.role_hierarchy.roles%' ]
+
+    app.services.login_logger:
+        class: App\Services\LoginLogger
+        arguments: [ '@logger', '@app.services.rest.user_login', '@repository.user', '@request_stack' ]
+
+    app.services.response_logger:
+        class: App\Services\ResponseLogger
+        arguments: [ '@logger', '@app.services.rest.request_log', '%kernel.environment%' ]

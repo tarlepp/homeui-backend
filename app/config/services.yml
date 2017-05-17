@@ -1,0 +1,37 @@
+# Import application services
+#
+# Note that all of there services are application bundle specified custom services.
+imports:
+    - { resource: services_annotation.yml }
+    - { resource: services_controller.yml }
+    - { resource: services_form.yml }
+    - { resource: services_listeners.yml }
+    - { resource: services_repository.yml }
+    - { resource: services_rest.yml }
+    - { resource: services_helper.yml }
+    - { resource: services_tests.yml }
+    - { resource: services_utils.yml }
+    - { resource: services_validator.yml }
+
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/book/service_container.html
+parameters:
+    # Override KnpLabs/DoctrineBehaviors parameters
+    knp.doctrine_behaviors.timestampable_subscriber.timestampable_trait: App\Doctrine\Behaviours\Timestampable
+    knp.doctrine_behaviors.blameable_subscriber.blameable_trait: App\Doctrine\Behaviours\Blameable
+    knp.doctrine_behaviors.blameable_subscriber.user_entity: App\Entity\User
+
+# Generic service configuration.
+#
+# Note that you should not add any application specified custom configurations here, use imports for those.
+services:
+    app.monolog_formatter:
+        class: Monolog\Formatter\LineFormatter
+        arguments: [ ~, ~, true ]
+
+    jms_serializer.cache_naming_strategy:
+        class: JMS\Serializer\Naming\IdenticalPropertyNamingStrategy
+
+    jms_serializer.object_constructor:
+        alias: jms_serializer.doctrine_object_constructor
+        public: false

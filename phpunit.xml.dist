@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- http://phpunit.de/manual/4.1/en/appendixes.configuration.html -->
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.1/phpunit.xsd"
+         backupGlobals="false"
+         colors="true"
+         bootstrap="app/phpunit_bootstrap.php"
+>
+    <php>
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak"/>
+        <ini name="error_reporting" value="-1" />
+        <ini name="date.timezone" value="UTC" />
+        <server name="KERNEL_DIR" value="app/" />
+    </php>
+
+    <testsuites>
+        <testsuite name="Functional tests">
+            <directory>tests/AppBundle/functional/</directory>
+        </testsuite>
+        <testsuite name="Unit tests">
+            <directory>tests/AppBundle/unit/</directory>
+        </testsuite>
+        <testsuite name="Integration tests">
+            <directory>tests/AppBundle/integration/</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+        <whitelist>
+            <directory>src</directory>
+            <exclude>
+                <directory>src/*Bundle/Resources</directory>
+                <directory>src/*/*Bundle/Resources</directory>
+                <directory>src/*/Bundle/*Bundle/Resources</directory>
+                <directory>src/*/Interfaces</directory>
+                <directory>src/*/Tests</directory>
+                <directory>src/*/DTO</directory>
+                <directory>src/*/Form</directory>
+                <directory>src/*/Command</directory>
+                <directory>src/*/DataFixtures</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+
+    <logging>
+        <log type="coverage-html" target="build/report" lowUpperBound="35" highLowerBound="70" />
+        <log type="coverage-clover" target="build/logs/clover.xml" />
+        <log type="coverage-text" target="php://stdout" showUncoveredFiles="false" showOnlySummary="true" />
+    </logging>
+</phpunit>

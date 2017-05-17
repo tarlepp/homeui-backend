@@ -1,0 +1,43 @@
+# Application specified listener services configuration.
+services:
+    app.event.body_listener:
+        class: App\EventListener\BodyListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 10 }
+
+    app.event.exception_listener:
+        class: App\EventListener\ExceptionListener
+        arguments: [ '@security.token_storage', '@logger', '%kernel.environment%' ]
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
+
+    app.event.response_listener:
+        class: App\EventListener\ResponseListener
+        arguments: [ '@app.services.response_logger', '@security.token_storage' ]
+        tags:
+            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
+
+    app.event.jwt_created_listener:
+        class: App\EventListener\JWTCreatedListener
+        arguments: [ '@app.services.rest.user', '@security.role_hierarchy', '@request_stack' ]
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
+
+    app.event.jwt_decoded_listener:
+        class: App\EventListener\JWTDecodedListener
+        arguments: [ '@request_stack', '@app.services.rest.user' ]
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_decoded, method: onJWTDecoded }
+
+    app.event.authentication_success:
+        class: App\EventListener\AuthenticationSuccessListener
+        arguments: [ '@app.services.login_logger' ]
+        tags:
+           - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_success, method: onAuthenticationSuccess }
+
+    app.event.doctrine.user:
+        class: App\Doctrine\Listener\UserListener
+        arguments: [ '@security.encoder_factory' ]
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: preUpdate }

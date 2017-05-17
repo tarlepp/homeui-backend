@@ -1,0 +1,28 @@
+services:
+    app.services.rest.helper.response:
+        class: App\Services\Rest\Helper\Response
+        arguments: [ '@serializer' ]
+
+    app.services.rest.sensor:
+        class: App\Services\Rest\Sensor
+        arguments: [ '@repository.sensor', '@validator' ]
+
+    app.services.rest.request_log:
+        class: App\Services\Rest\RequestLog
+        arguments: [ '@repository.request_log', '@validator' ]
+
+    app.services.rest.user:
+        class: App\Services\Rest\User
+        arguments: [ '@repository.user', '@validator' ]
+
+    app.services.rest.trans_unit:
+        class: App\Services\Rest\TransUnit
+        arguments: [ '@repository.trans_unit', '@validator' ]
+
+    app.services.rest.user_group:
+        class: App\Services\Rest\UserGroup
+        arguments: [ '@repository.user_group', '@validator' ]
+
+    app.services.rest.user_login:
+        class: App\Services\Rest\UserLogin
+        arguments: [ '@repository.user_login', '@validator' ]

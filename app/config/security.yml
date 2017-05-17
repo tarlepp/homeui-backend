@@ -1,0 +1,70 @@
+# To get started with security, check out the documentation:
+# http://symfony.com/doc/current/book/security.html
+security:
+
+    # http://symfony.com/doc/current/cookbook/security/named_encoders.html
+    encoders:
+        Symfony\Component\Security\Core\User\User:
+            algorithm: bcrypt
+            cost: 12
+        App\Entity\User:
+            algorithm: bcrypt
+            cost: 12
+
+    # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
+    providers:
+        users:
+            entity:
+                class: App\Entity\User
+
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        # https://github.com/lexik/LexikJWTAuthenticationBundle/blob/master/Resources/doc/index.md
+        gettoken:
+            pattern: ^/auth/getToken$
+            stateless: true
+            gfreeau_get_jwt:
+                username_parameter: username
+                password_parameter: password
+                post_only: true
+                authentication_provider: security.authentication.provider.dao
+                user_checker: security.user_checker
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+
+        # https://github.com/gesdinet/JWTRefreshTokenBundle#step-4-allow-anonymous-access-to-refresh-token
+        refresh:
+            pattern:  ^/auth/refreshToken
+            stateless: true
+            anonymous: true
+
+        # https://github.com/nelmio/NelmioApiDocBundle
+        api_doc:
+            pattern:  ^/api/doc
+            stateless: true
+            anonymous: true
+
+        root:
+            pattern:  ^/$
+            stateless: true
+            anonymous: true
+
+        api:
+            pattern: ^/
+            stateless: true
+            anonymous: true
+            guard:
+                authenticators:
+                    - lexik_jwt_authentication.jwt_token_authenticator
+
+    role_hierarchy:
+        ROLE_USER:    [ROLE_LOGGED]
+        ROLE_ADMIN:   [ROLE_USER]
+        ROLE_ROOT:    [ROLE_ADMIN]
+
+    access_control:
+        - { path: ^/auth/refreshToken, roles: IS_AUTHENTICATED_ANONYMOUSLY }

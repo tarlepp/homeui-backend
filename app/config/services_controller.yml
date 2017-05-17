@@ -1,0 +1,22 @@
+services:
+    app.controller.auth:
+        class:      App\Controller\AuthController
+        arguments:  [ '@security.token_storage', '@jms_serializer', '@app.services.rest.helper.response' ]
+
+    app.controller.sensor:
+        class:      App\Controller\SensorController
+        arguments:  [ '@app.services.rest.sensor', '@app.services.rest.helper.response' ]
+
+    app.controller.translation:
+        class:      App\Controller\TranslationController
+        arguments:  [ '@app.services.rest.trans_unit', '@app.services.rest.helper.response' ]
+
+    app.controller.user:
+        class:      App\Controller\UserController
+        arguments:  [ '@app.services.rest.user', '@app.services.rest.helper.response' ]
+        calls:
+            - [ setTokenStorage, [ '@security.token_storage'] ]
+
+    app.controller.user_group:
+        class:      App\Controller\UserGroupController
+        arguments:  [ '@app.services.rest.user_group', '@app.services.rest.helper.response' ]
