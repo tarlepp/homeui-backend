@@ -12,6 +12,11 @@ services:
         arguments: [ App\Entity\Sensor ]
         class: App\Repository\Sensor
 
+    repository.sensordata:
+        parent: repository
+        arguments: [ App\Entity\SensorData ]
+        class: App\Repository\SensorData
+
     repository.date_dimension:
         parent: repository
         arguments: [ App\Entity\DateDimension ]

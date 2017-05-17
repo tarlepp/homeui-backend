@@ -207,7 +207,7 @@ class Sensor implements EntityInterface
      *
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
@@ -217,7 +217,7 @@ class Sensor implements EntityInterface
      *
      * @return string
      */
-    public function getIp()
+    public function getIp(): string
     {
         return $this->ip;
     }
@@ -227,7 +227,7 @@ class Sensor implements EntityInterface
      *
      * @return string
      */
-    public function getSnmpOid()
+    public function getSnmpOid(): string
     {
         return $this->snmp_oid;
     }

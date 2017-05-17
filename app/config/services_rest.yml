@@ -7,6 +7,10 @@ services:
         class: App\Services\Rest\Sensor
         arguments: [ '@repository.sensor', '@validator' ]
 
+    app.services.rest.sensordata:
+        class: App\Services\Rest\SensorData
+        arguments: [ '@repository.sensordata', '@validator' ]
+
     app.services.rest.request_log:
         class: App\Services\Rest\RequestLog
         arguments: [ '@repository.request_log', '@validator' ]

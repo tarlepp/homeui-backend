@@ -27,7 +27,7 @@ class SensorData implements EntityInterface
     use ORMBehaviors\Timestampable;
 
     /**
-     * Sensor id.
+     * SensorData id.
      *
      * @var string
      *
@@ -37,12 +37,6 @@ class SensorData implements EntityInterface
      *      "SensorData.id",
      *  })
      * @JMS\Type("string")
-     *
-     * @ORM\OneToMany(
-     *      targetEntity="App\Entity\SensorData",
-     *      mappedBy="Sensor_ID",
-     *      cascade={"all"},
-     *  )
      *
      * @ORM\Column(
      *      name="id",
@@ -54,111 +48,65 @@ class SensorData implements EntityInterface
     private $id;
 
     /**
-     * Sensor sensor_type_id.
-     *
-     * @var string
-     *
-     * @JMS\Groups({
-     *      "Default",
-     *      "Sensor",
-     *      "Sensor.sensor_type_id",
-     *      "set.DTO",
-     *  })
-     * @JMS\Type("string")
-     *
-     * @Assert\NotBlank()
-     * @Assert\NotNull()
-     *
-     * @ORM\Column(
-     *      name="sensor_type_id",
-     *      type="guid",
-     *      nullable=false,
-     *  )
-     */
-    private $sensor_type_id;
-
-    /**
-     * Sensor name.
+     * SensorData Sensor id.
      *
      * @var ArrayCollection<Sensor>
      *
      * @JMS\Groups({
-     *      "Sensor",
-     *      "Sensor.name",
+     *      "SensorData",
+     *      "SensorData.sensorid",
      *  })
-     * @JMS\Type("ArrayCollection<App\Entity\SensorData>")
-     * @JMS\XmlList(entry = "Sensor")
+     * @ORM\ManyToOne(
+     *      targetEntity="App\Entity\Sensor",
+     *      mappedBy="id",
+     *  )
+     * @JMS\XmlList(entry = "SensorData")
      *
      * @ORM\Column(
-     *      name="name",
+     *      name="sensorid",
      *      type="string",
      *      lenght=255,
      *  )
      */
-    private $name;
+    private $sensorid;
 
     /**
-     * Sensor description.
+     * SensorData value.
      *
-     * @var string
+     * @var float
      *
      * @JMS\Groups({
      *      "Default",
-     *      "Sensor",
-     *      "Sensor.description",
-     *      "set.DTO",
+     *      "SensorData",
+     *      "SensorData.value",
      *  })
-     * @JMS\Type("string")
+     * @JMS\Type("float")
      *
      * @ORM\Column(
-     *      name="description",
-     *      type="string",
-     *      length=1024,
+     *      name="value",
+     *      type="float",
      *  )
      */
-    private $description;
+    private $value;
 
     /**
-     * Sensor IP-address.
+     * SensorData stamp.
      *
-     * @var string
+     * @var datetime
      *
      * @JMS\Groups({
      *      "Default",
-     *      "Sensor",
-     *      "Sensor.ip",
-     *      "set.DTO",
+     *      "SensorData",
+     *      "SensorData.timestamp",
      *  })
-     * @JMS\Type("string")
+     * @JMS\Type("datetime")
      *
      * @ORM\Column(
-     *      name="description",
-     *      type="string",
-     *      length=255,
+     *      name="value",
+     *      type="datetime",
      *  )
      */
-    private $ip;
-
-    /**
-     * Sensor SNMP-OID.
-     *
-     * @var string
-     *
-     * @JMS\Groups({
-     *      "Default",
-     *      "Sensor",
-     *      "Sensor.snmp_oid",
-     *      "set.DTO",
-     *  })
-     * @JMS\Type("string")
-     *
-     * @ORM\Column(
-     *      name="description",
-     *      type="string",
-     *      length=255,
-     *  )
-     */
-    private $snmp_oid;
+    private $stamp;
 
     /**
      * User constructor.
@@ -186,86 +134,55 @@ class SensorData implements EntityInterface
      * @return string
      */
 
-    public function getSensorTypeId(): string
+    public function getSensorId(): string
     {
-        return $this->sensor_type_id;
+        return $this->sensorid;
     }
 
     /**
-     * Get name
+     * Get value
      *
-     * @return string
+     * @return float
      */
-    public function getName(): string
+    public function getValue(): float
     {
-        return $this->name;
+        return $this->value;
     }
 
     /**
-     * Get description
+     * Get Stamp
      *
-     * @return string
+     * @return datetime
      */
-    public function getDescription()
+    public function getStamp(): datetime
     {
-        return $this->description;
+        return $this->stamp;
     }
 
     /**
-     * Get IP-address
+     * Set value
      *
-     * @return string
+     * @param string $value
+     *
+     * @return SensorData
      */
-    public function getIp()
+    public function setValue(float $value): SensorData
     {
-        return $this->ip;
-    }
-
-    /**
-     * Get SNMP-OID
-     *
-     * @return string
-     */
-    public function getSnmpOid()
-    {
-        return $this->snmp_oid;
-    }
-
-
-    /**
-     * Get sensor data
-     *
-     * @return ArrayCollection<SensorData>
-     */
-    public function getSensorData(): ArrayCollection
-    {
-        return $this->SensorData;
-    }
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     *
-     * @return Sensor
-     */
-    public function setName(string $name): Sensor
-    {
-        $this->name = $name;
+        $this->name = $value;
 
         return $this;
     }
 
     /**
-     * Set description
+     * Set Stamp
      *
-     * @param string $description
+     * @param datetime $stamp
      *
-     * @return Sensor
+     * @return SensorData
      */
-    public function setDescription(string $description): Sensor
+    public function setStamp(datetime $stamp): SensorData
     {
-        $this->description = $description;
+        $this->stamp = $stamp;
 
         return $this;
     }

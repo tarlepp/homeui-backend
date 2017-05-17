@@ -7,6 +7,10 @@ services:
         class:      App\Controller\SensorController
         arguments:  [ '@app.services.rest.sensor', '@app.services.rest.helper.response' ]
 
+    app.controller.sensordata:
+        class:      App\Controller\SensorDataController
+        arguments:  [ '@app.services.rest.sensordata', '@app.services.rest.helper.response' ]
+
     app.controller.translation:
         class:      App\Controller\TranslationController
         arguments:  [ '@app.services.rest.trans_unit', '@app.services.rest.helper.response' ]
