@@ -26,9 +26,7 @@ $local = file_exists($configFile) ? require_once $configFile : [];
 
 // By default allow 'localhost'
 $base = [
-    '127.0.0.1',
-    'fe80::1',
-    '::1',
+    '*'
 ];
 
 return array_merge($base, $local);

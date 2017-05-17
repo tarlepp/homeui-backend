@@ -175,7 +175,7 @@ class SensorData implements EntityInterface
      *
      * @return datetime
      */
-    public function getStamp(): datetime
+    public function getStamp(): string
     {
         return $this->stamp;
     }
@@ -201,7 +201,7 @@ class SensorData implements EntityInterface
      *
      * @return SensorData
      */
-    public function setStamp(datetime $stamp): SensorData
+    public function setStamp(string $stamp): SensorData
     {
         $this->stamp = $stamp;
 
