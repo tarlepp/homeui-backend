@@ -55,15 +55,9 @@ class Sensor implements EntityInterface
      *      "Default",
      *      "Sensor",
      *      "Sensor.id",
-     *      "SensorData.sensorid",
+     *      "SensorData.sensor",
      *  })
      * @JMS\Type("string")
-     *
-     * @ORM\OneToMany(
-     *      targetEntity="App\Entity\SensorData",
-     *      mappedBy="sensorid",
-     *      cascade={"all"},
-     *  )
      *
      * @ORM\Column(
      *      name="id",
@@ -96,24 +90,18 @@ class Sensor implements EntityInterface
      *      nullable=false,
      *  )
      */
-    private $sensor_type_id;
+    private $sensorType;
 
     /**
      * Sensor name.
      *
-     * @var ArrayCollection<Sensor>
+     * @var string
      *
      * @JMS\Groups({
      *      "Sensor",
      *      "Sensor.name",
      *  })
      * @JMS\Type("string")
-     *
-     * @ORM\ManyToOne(
-     *      targetEntity="App\Entity\SensorType",
-     *      inversedBy="id",
-     *      cascade={"all"},
-     *  )
      *
      * @ORM\Column(
      *      name="name",
@@ -132,7 +120,6 @@ class Sensor implements EntityInterface
      *      "Default",
      *      "Sensor",
      *      "Sensor.description",
-     *      "set.DTO",
      *  })
      * @JMS\Type("string")
      *
@@ -153,7 +140,6 @@ class Sensor implements EntityInterface
      *      "Default",
      *      "Sensor",
      *      "Sensor.ip",
-     *      "set.DTO",
      *  })
      * @JMS\Type("string")
      *
@@ -174,7 +160,6 @@ class Sensor implements EntityInterface
      *      "Default",
      *      "Sensor",
      *      "Sensor.snmp_oid",
-     *      "set.DTO",
      *  })
      * @JMS\Type("string")
      *
@@ -184,7 +169,24 @@ class Sensor implements EntityInterface
      *      length=255,
      *  )
      */
-    private $snmp_oid;
+    private $snmpOid;
+
+    /**
+     * @var ArrayCollection<SensorData>
+     *
+     * @JMS\Groups({
+     *      "Sensor.datas",
+     *  })
+     * @JMS\Type("ArrayCollection<App\Entity\SensorData>")
+     * @JMS\XmlList(entry = "book")
+     *
+     * @ORM\OneToMany(
+     *      targetEntity="App\Entity\SensorData",
+     *      mappedBy="sensor",
+     *      cascade={"all"},
+     *  )
+     */
+    private $measurements;
 
     /**
      * User constructor.
@@ -193,7 +195,7 @@ class Sensor implements EntityInterface
     {
         $this->id = Uuid::uuid4()->toString();
 
-        $this->SensorData = new ArrayCollection();
+        $this->measurements = new ArrayCollection();
     }
 
     /**
@@ -212,9 +214,9 @@ class Sensor implements EntityInterface
      * @return string
      */
 
-    public function getSensorTypeId(): string
+    public function getSensorType(): string
     {
-        return $this->sensor_type_id;
+        return $this->sensorType;
     }
 
     /**
@@ -254,34 +256,22 @@ class Sensor implements EntityInterface
      */
     public function getSnmpOid(): string
     {
-        return $this->snmp_oid;
-    }
-
-
-    /**
-     * Get sensor data
-     *
-     * @return ArrayCollection<SensorData>
-     */
-    public function getSensorData(): ArrayCollection
-    {
-        return $this->SensorData;
+        return $this->snmpOid;
     }
 
     /**
      * Set sensor_type_id
      *
-     * @param string $sensor_type_id
+     * @param string $sensorType
      *
      * @return Sensor
      */
-    public function setSensorTypeId(string $sensor_type_id): Sensor
+    public function setSensorType(string $sensorType): Sensor
     {
-        $this->name = $sensor_type_id;
+        $this->name = $sensorType;
 
         return $this;
     }
-
 
     /**
      * Set name
@@ -328,16 +318,22 @@ class Sensor implements EntityInterface
     /**
      * Set snmp_oid
      *
-     * @param string $snmp_oid
+     * @param string $snmpOid
      *
      * @return Sensor
      */
-    public function setSnmpOid(string $snmp_oid): Sensor
+    public function setSnmpOid(string $snmpOid): Sensor
     {
-        $this->snmp_oid = $snmp_oid;
+        $this->snmpOid = $snmpOid;
 
         return $this;
     }
 
-
+    /**
+     * @return mixed
+     */
+    public function getMeasurements()
+    {
+        return $this->measurements;
+    }
 }

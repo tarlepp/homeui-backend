@@ -46,8 +46,6 @@ class SensorData implements EntityInterface
     use ORMBehaviors\Timestampable;
 
     /**
-     * SensorData id.
-     *
      * @var string
      *
      * @JMS\Groups({
@@ -67,33 +65,27 @@ class SensorData implements EntityInterface
     private $id;
 
     /**
-     * SensorData Sensor id.
-     *
-     * @var ArrayCollection<Sensor>
+     * @var \App\Entity\Sensor
      *
      * @JMS\Groups({
-     *      "SensorData",
-     *      "SensorData.sensorid",
+     *      "SensorData.sensor",
      *  })
      * @ORM\ManyToOne(
      *      targetEntity="App\Entity\Sensor",
-     *      inversedBy="id",
+     *      inversedBy="measurements",
      *      cascade={"all"},
      *  )
-     *
-     * @JMS\XmlList(entry = "SensorData")
-     *
-     * @ORM\Column(
-     *      name="sensorid",
-     *      type="guid",
-     *      nullable=false,
-     *  )
+     * @ORM\JoinColumns({
+     *      @ORM\JoinColumn(
+     *          name="sensor_id",
+     *          referencedColumnName="id",
+     *          onDelete="CASCADE"
+     *      ),
+     *  })
      */
-    private $sensorid;
+    private $sensor;
 
     /**
-     * SensorData value.
-     *
      * @var float
      *
      * @JMS\Groups({
@@ -135,8 +127,6 @@ class SensorData implements EntityInterface
     public function __construct()
     {
         $this->id = Uuid::uuid4()->toString();
-
-        $this->SensorData = new ArrayCollection();
     }
 
     /**
@@ -147,17 +137,6 @@ class SensorData implements EntityInterface
     public function getId(): string
     {
         return $this->id;
-    }
-
-    /**
-     * Get sensor_type_id
-     *
-     * @return string
-     */
-
-    public function getSensorId(): string
-    {
-        return $this->sensorid;
     }
 
     /**
@@ -182,7 +161,7 @@ class SensorData implements EntityInterface
     /**
      * Set value
      *
-     * @param string $value
+     * @param float $value
      *
      * @return SensorData
      */
@@ -192,21 +171,6 @@ class SensorData implements EntityInterface
 
         return $this;
     }
-
-    /**
-     * Set value
-     *
-     * @param string $value
-     *
-     * @return SensorData
-     */
-    public function setSensorId(string $value): SensorData
-    {
-        $this->sensorid = $value;
-
-        return $this;
-    }
-
 
     /**
      * Set Stamp
@@ -222,4 +186,23 @@ class SensorData implements EntityInterface
         return $this;
     }
 
+    /**
+     * @return Sensor
+     */
+    public function getSensor(): Sensor
+    {
+        return $this->sensor;
+    }
+
+    /**
+     * @param Sensor $sensor
+     *
+     * @return SensorData
+     */
+    public function setSensor(Sensor $sensor): SensorData
+    {
+        $this->sensor = $sensor;
+
+        return $this;
+    }
 }
