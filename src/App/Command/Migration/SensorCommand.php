@@ -85,7 +85,7 @@ class SensorCommand extends Base {
 
                 // Create new Sensor entity
                 $sensor = new Sensor();
-                $sensor->setSensorTypeId($sensorType->getId());
+                $sensor->setSensorType($sensorType->getId());
                 $sensor->setName($row['Name']);
                 $sensor->setDescription($row['Description']);
                 $sensor->setIp($row['IP']);
