@@ -57,7 +57,7 @@ class SensorSpec extends ObjectBehavior
 
     function it_should_return_expected_value_when_calling_getSearchColumns_method()
     {
-        $expected = ['name', 'description', 'ip'];
+        $expected = ['name', 'description', 'ip', 'snmp_oid'];
 
         $this->getSearchColumns()->shouldBeArray();
         $this->getSearchColumns()->shouldReturn($expected);

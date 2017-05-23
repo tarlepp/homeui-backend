@@ -85,8 +85,8 @@ class SensorData implements EntityInterface
      *
      * @ORM\Column(
      *      name="sensorid",
-     *      type="string",
-     *      length=255,
+     *      type="guid",
+     *      nullable=false,
      *  )
      */
     private $sensorid;
@@ -113,14 +113,14 @@ class SensorData implements EntityInterface
     /**
      * SensorData stamp.
      *
-     * @var datetime
+     * @var \DateTime
      *
      * @JMS\Groups({
      *      "Default",
      *      "SensorData",
      *      "SensorData.stamp",
      *  })
-     * @JMS\Type("datetime")
+     * @JMS\Type("DateTime")
      *
      * @ORM\Column(
      *      name="stamp",
@@ -130,7 +130,7 @@ class SensorData implements EntityInterface
     private $stamp;
 
     /**
-     * User constructor.
+     * SensorData constructor.
      */
     public function __construct()
     {
@@ -162,7 +162,6 @@ class SensorData implements EntityInterface
 
     /**
      * Get value
-     *
      * @return float
      */
     public function getValue(): float
@@ -173,9 +172,9 @@ class SensorData implements EntityInterface
     /**
      * Get Stamp
      *
-     * @return datetime
+     * @return \DateTime
      */
-    public function getStamp(): string
+    public function getStamp(): \DateTime
     {
         return $this->stamp;
     }
@@ -189,21 +188,36 @@ class SensorData implements EntityInterface
      */
     public function setValue(float $value): SensorData
     {
-        $this->name = $value;
+        $this->value = $value;
 
         return $this;
     }
 
     /**
-     * Set Stamp
+     * Set value
      *
-     * @param datetime $stamp
+     * @param string $value
      *
      * @return SensorData
      */
-    public function setStamp(string $stamp): SensorData
+    public function setSensorId(string $value): SensorData
     {
-        $this->stamp = $stamp;
+        $this->sensorid = $value;
+
+        return $this;
+    }
+
+
+    /**
+     * Set Stamp
+     *
+     * @param \DateTime $stamp
+     *
+     * @return SensorData
+     */
+    public function setStamp(\DateTime $stamp): SensorData
+    {
+        $this->stamp = new \DateTime($stamp);
 
         return $this;
     }

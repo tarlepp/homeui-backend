@@ -33,6 +33,6 @@ class SensorDataController extends RestController
     use RestAction\Anon\Count;
     use RestAction\Anon\Ids;
     use RestAction\User\Create;
-    use RestAction\Admin\Update;
+    use RestAction\User\Update;
     use RestAction\Admin\Delete;
 }

@@ -11,6 +11,10 @@ services:
         class:      App\Controller\SensorDataController
         arguments:  [ '@app.services.rest.sensordata', '@app.services.rest.helper.response' ]
 
+    app.controller.sensortype:
+        class:      App\Controller\SensorTypeController
+        arguments:  [ '@app.services.rest.sensortype', '@app.services.rest.helper.response' ]
+
     app.controller.translation:
         class:      App\Controller\TranslationController
         arguments:  [ '@app.services.rest.trans_unit', '@app.services.rest.helper.response' ]

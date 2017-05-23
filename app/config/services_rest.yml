@@ -11,6 +11,10 @@ services:
         class: App\Services\Rest\SensorData
         arguments: [ '@repository.sensordata', '@validator' ]
 
+    app.services.rest.sensortype:
+        class: App\Services\Rest\SensorType
+        arguments: [ '@repository.sensortype', '@validator' ]
+
     app.services.rest.request_log:
         class: App\Services\Rest\RequestLog
         arguments: [ '@repository.request_log', '@validator' ]

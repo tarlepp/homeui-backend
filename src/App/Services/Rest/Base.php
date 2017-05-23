@@ -84,6 +84,13 @@ abstract class Base implements Interfaces\Base
     /**
      * {@inheritdoc}
      */
+    public function getEntityManager(): \Doctrine\ORM\EntityManager {
+        return $this->repository->getEntityManager();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getAssociations(): array
     {
         return \array_keys($this->repository->getAssociations());

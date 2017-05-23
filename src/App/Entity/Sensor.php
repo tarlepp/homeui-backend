@@ -18,6 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * Sensor
  *
@@ -106,8 +107,13 @@ class Sensor implements EntityInterface
      *      "Sensor",
      *      "Sensor.name",
      *  })
-     * @JMS\Type("ArrayCollection<App\Entity\SensorData>")
-     * @JMS\XmlList(entry = "Sensor")
+     * @JMS\Type("string")
+     *
+     * @ORM\ManyToOne(
+     *      targetEntity="App\Entity\SensorType",
+     *      inversedBy="id",
+     *      cascade={"all"},
+     *  )
      *
      * @ORM\Column(
      *      name="name",
@@ -263,6 +269,21 @@ class Sensor implements EntityInterface
     }
 
     /**
+     * Set sensor_type_id
+     *
+     * @param string $sensor_type_id
+     *
+     * @return Sensor
+     */
+    public function setSensorTypeId(string $sensor_type_id): Sensor
+    {
+        $this->name = $sensor_type_id;
+
+        return $this;
+    }
+
+
+    /**
      * Set name
      *
      * @param string $name
@@ -289,5 +310,34 @@ class Sensor implements EntityInterface
 
         return $this;
     }
+
+    /**
+     * Set IP
+     *
+     * @param string $ip
+     *
+     * @return Sensor
+     */
+    public function setIp(string $ip): Sensor
+    {
+        $this->ip = $ip;
+
+        return $this;
+    }
+
+    /**
+     * Set snmp_oid
+     *
+     * @param string $snmp_oid
+     *
+     * @return Sensor
+     */
+    public function setSnmpOid(string $snmp_oid): Sensor
+    {
+        $this->snmp_oid = $snmp_oid;
+
+        return $this;
+    }
+
 
 }
