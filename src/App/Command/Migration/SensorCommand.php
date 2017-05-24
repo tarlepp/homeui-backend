@@ -95,9 +95,10 @@ class SensorCommand extends Base {
 
                 foreach ($this->getQueryResults("Select ID,Value,Stamp From Sensor_Data WHERE Sensor_ID=".$row['ID']."") as $dataRow) {
                     // Create new SensorData entity
+                    $date = new \DateTime($dataRow['Stamp']);
                     $sensorData = new SensorData();
-                    $sensorData->setStamp($dataRow['Stamp']);
-                    $sensorData->setSensorId($sensor->getId());
+                    $sensorData->setStamp($date);
+                    $sensorData->setSensor($sensor);
                     $sensorData->setValue($dataRow['Value']);
 
                     // Store entity to database

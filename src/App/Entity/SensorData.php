@@ -181,7 +181,7 @@ class SensorData implements EntityInterface
      */
     public function setStamp(\DateTime $stamp): SensorData
     {
-        $this->stamp = new \DateTime($stamp);
+        $this->stamp = $stamp;
 
         return $this;
     }

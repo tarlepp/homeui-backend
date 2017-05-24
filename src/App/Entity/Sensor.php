@@ -178,7 +178,7 @@ class Sensor implements EntityInterface
      *      "Sensor.datas",
      *  })
      * @JMS\Type("ArrayCollection<App\Entity\SensorData>")
-     * @JMS\XmlList(entry = "book")
+     * @JMS\XmlList(entry = "sensordata")
      *
      * @ORM\OneToMany(
      *      targetEntity="App\Entity\SensorData",
