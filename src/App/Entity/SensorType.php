@@ -125,18 +125,17 @@ class SensorType implements EntityInterface
     private $unit;
 
     /**
-     * @var ArrayCollection<SensorData>
+     * @var ArrayCollection<Sensor>
      *
      * @JMS\Groups({
-     *      "Sensor.datas",
+     *      "SensorType.sensors",
      *  })
-     * @JMS\Type("ArrayCollection<App\Entity\SensorData>")
+     * @JMS\Type("ArrayCollection<App\Entity\Sensor>")
      * @JMS\XmlList(entry = "sensordata")
      *
      * @ORM\OneToMany(
      *      targetEntity="App\Entity\Sensor",
-     *      mappedBy="sensortype",
-     *      cascade={"all"},
+     *      mappedBy="sensorType",
      *  )
      */
     private $sensors;
@@ -182,7 +181,6 @@ class SensorType implements EntityInterface
         return $this->unit;
     }
 
-
     /**
      * Set name
      *
@@ -211,7 +209,6 @@ class SensorType implements EntityInterface
         return $this;
     }
 
-
     /**
      * Set Unit
      *
@@ -226,4 +223,11 @@ class SensorType implements EntityInterface
         return $this;
     }
 
+    /**
+     * @return ArrayCollection
+     */
+    public function getSensors(): ArrayCollection
+    {
+        return $this->sensors;
+    }
 }

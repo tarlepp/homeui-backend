@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: jukka
@@ -17,7 +18,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 use Ramsey\Uuid\Uuid;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Sensor
@@ -77,7 +77,7 @@ class Sensor implements EntityInterface
      * @ORM\ManyToOne(
      *      targetEntity="App\Entity\SensorType",
      *      inversedBy="sensors",
-     *      cascade={"all"},
+     *      cascade={"all"}
      *  )
      * @ORM\JoinColumns({
      *      @ORM\JoinColumn(
@@ -180,7 +180,6 @@ class Sensor implements EntityInterface
      * @ORM\OneToMany(
      *      targetEntity="App\Entity\SensorData",
      *      mappedBy="sensor",
-     *      cascade={"all"},
      *  )
      */
     private $measurements;

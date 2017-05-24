@@ -28,14 +28,14 @@ abstract class Base extends ContainerAwareCommand
      *
      * @var string
      */
-    protected $commandName;
+    protected static $commandName;
 
     /**
      * Description of the console command.
      *
      * @var string
      */
-    protected $commandDescription;
+    protected static $commandDescription;
 
     /**
      * @var EntityManager
@@ -156,8 +156,8 @@ abstract class Base extends ContainerAwareCommand
 
         // Configure command
         $this
-            ->setName($this->commandName)
-            ->setDescription($this->commandDescription)
+            ->setName(static::$commandName)
+            ->setDescription(static::$commandDescription)
             ->setDefinition(
                 new InputDefinition(
                     array_map($iterator, array_merge($this->defaultParameters, $this->commandParameters))
@@ -201,8 +201,10 @@ abstract class Base extends ContainerAwareCommand
      *
      * @return  ProgressBar
      */
-    protected function getProgressBar($steps = 0)
+    protected function getProgressBar(int $steps = null): ProgressBar
     {
+        $steps = $steps ?? 0;
+
         // Create new progress bar and start it
         if (!($this->progress instanceof ProgressBar)) {
             $this->io->newLine(4);
@@ -210,7 +212,7 @@ abstract class Base extends ContainerAwareCommand
             $this->progress = $this->io->createProgressBar($steps);
             $this->progress->setBarWidth(48);
             $this->progress->start();
-            $this->progress->setFormat('Processing command: ' . $this->commandName . '  
+            $this->progress->setFormat('Processing command: ' . static::$commandName . '  
  %current%/%max% [%bar%] %percent:3s%% 
  Elapsed time:   %elapsed:6s%
  Estimated time: %estimated:-6s% 
