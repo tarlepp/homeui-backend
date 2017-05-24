@@ -20,23 +20,22 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @author  Jukka Tainio <jukka@tainio.fi>
  *
  */
-class SensorCommand extends Base {
+class SensorDataCommand extends Base {
     /**
      * Name of the console command.
      *
      * @var string
      */
-    protected static $commandName = 'migration:sensor';
+    protected static $commandName = 'migration:sensor-data';
 
     /**
      * Description of the console command.
      *
      * @var string
      */
-    protected static $commandDescription = 'Command to migrate old \'Sensor/SensorType\' table data to new structure';
+    protected static $commandDescription = 'Command to migrate old \'SensorData\' table data to new structure';
 
-    private $cntSensorType = 0;
-    private $cntSensor = 0;
+    private $cntMeasurement = 0;
 
     /**
      * @return string
@@ -53,6 +52,9 @@ class SensorCommand extends Base {
      * @param OutputInterface $output An OutputInterface instance
      *
      * @return null|int null or 0 if everything went fine, or an error code
+     * @throws \InvalidArgumentException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\NoResultException
      *
      * @throws \LogicException
      * @throws \Doctrine\DBAL\DBALException
@@ -71,112 +73,35 @@ class SensorCommand extends Base {
             return 0;
         }
 
+        /** @var \App\Services\Rest\Sensor $service */
+        $service = $this->getContainer()->get('app.services.rest.sensor');
+
         // Initialize progress bar
-        $this->getProgressBar($this->getSourceDataCount('Sensor') + 1);
+        $this->getProgressBar($service->count() + 1);
 
         // Truncate Sensor and SensorType entity data
-        $this->truncateEntity(Sensor::class);
-        $this->truncateEntity(SensorType::class);
+        $this->truncateEntity(SensorData::class);
 
-        \array_map([$this, 'processSensorType'], $this->getSourceData('Sensor_Type'));
+        \array_map([$this, 'processMeasurements'], $service->find());
 
         $this->progress->finish();
 
         $this->io->newLine(2);
         $this->io->success([
             'Successfully created following',
-            ' SensorType entities:  ' . $this->cntSensorType,
-            ' Sensor entities:      ' . $this->cntSensor,
+            ' Measurement entities: ' . $this->cntMeasurement,
         ]);
 
         return 0;
     }
 
     /**
-     * @param array $sensorTypeRow
-     *
-     * @throws \Doctrine\ORM\ORMInvalidArgumentException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \Doctrine\DBAL\DBALException
-     */
-    private function processSensorType(array $sensorTypeRow): void
-    {
-        // Create new SensorType entity
-        $sensorType = new SensorType();
-        $sensorType->setName($sensorTypeRow['Name']);
-        $sensorType->setDescription($sensorTypeRow['Description']);
-        $sensorType->setUnit($sensorTypeRow['Unit']);
-
-        $this->cntSensorType++;
-
-        // Persist and flush sensor type to database
-        $this->em->persist($sensorType);
-        $this->em->flush($sensorType);
-
-        // Process current sensor type sensors
-        $this->processSensors($sensorType, (int)$sensorTypeRow['ID']);
-
-        // Detach SensorType entity from em
-        $this->em->detach($sensorType);
-    }
-
-    /**
-     * Method to process specified sensor type sensors.
-     *
-     * @param SensorType $sensorType
-     * @param int        $sensorTypeId
-     *
-     * @throws \Doctrine\DBAL\DBALException
-     */
-    private function processSensors(SensorType $sensorType, int $sensorTypeId): void
-    {
-        $query = \sprintf(
-            'SELECT * FROM Sensor WHERE Sensor_Type_ID = %d',
-            $sensorTypeId
-        );
-
-        $sensors = $this->getQueryResults($query);
-
-        \array_map([$this, 'processSensor'], $sensors, \array_fill(0, \count($sensors), $sensorType));
-    }
-
-    /**
-     * Method to process single sensor
-     *
-     * @param array      $sensorRow
-     * @param SensorType $sensorType
-     *
-     * @throws \Doctrine\ORM\ORMInvalidArgumentException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \Doctrine\DBAL\DBALException
-     */
-    private function processSensor(array $sensorRow, SensorType $sensorType): void
-    {
-        // Create new Sensor entity
-        $sensor = new Sensor();
-        $sensor->setSensorType($sensorType);
-        $sensor->setName($sensorRow['Name']);
-        $sensor->setDescription($sensorRow['Description']);
-        $sensor->setIp($sensorRow['IP']);
-        $sensor->setSnmpOid($sensorRow['Snmp_oid']);
-        $sensor->setOldId((int)$sensorRow['ID']);
-
-        $this->em->persist($sensor);
-        $this->em->flush($sensor);
-
-        $this->cntSensor++;
-
-        $this->progress->advance();
-    }
-
-    /**
      * @param Sensor $sensor
-     * @param int    $sensorId
      *
      * @throws \Doctrine\DBAL\DBALException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    private function processMeasurements(Sensor $sensor, int $sensorId): void
+    private function processMeasurements(Sensor $sensor): void
     {
         $limit = 1000;
         $offset = 0;
@@ -184,7 +109,7 @@ class SensorCommand extends Base {
         while (true) {
             $query = \sprintf(
                 'SELECT ID, Value, Stamp FROM Sensor_Data WHERE Sensor_ID = %d LIMIT %d OFFSET %d',
-                $sensorId,
+                $sensor->getOldId(),
                 $limit,
                 $offset
             );
@@ -193,10 +118,14 @@ class SensorCommand extends Base {
 
             // There is no more measurement rows to process
             if (\count($measurements) === 0) {
+                $this->em->flush();
+
                 break;
             }
 
             \array_map([$this, 'processMeasurement'], $measurements, \array_fill(0, \count($measurements), $sensor));
+
+            $this->em->flush();
 
             $offset += $limit;
         }

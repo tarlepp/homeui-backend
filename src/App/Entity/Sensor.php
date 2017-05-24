@@ -169,6 +169,16 @@ class Sensor implements EntityInterface
     private $snmpOid;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(
+     *      name="old_id",
+     *      type="integer",
+     *  )
+     */
+    private $oldId;
+
+    /**
      * @var ArrayCollection<SensorData>
      *
      * @JMS\Groups({
@@ -329,5 +339,25 @@ class Sensor implements EntityInterface
     public function getMeasurements()
     {
         return $this->measurements;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOldId(): int
+    {
+        return $this->oldId;
+    }
+
+    /**
+     * @param int $oldId
+     *
+     * @return Sensor
+     */
+    public function setOldId(int $oldId): Sensor
+    {
+        $this->oldId = $oldId;
+
+        return $this;
     }
 }
