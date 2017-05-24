@@ -68,6 +68,26 @@ class Sensor implements EntityInterface
      */
     private $id;
 
+    /**
+     * @var \App\Entity\Sensor
+     *
+     * @JMS\Groups({
+     *      "Sensor.sensorType",
+     *  })
+     * @ORM\ManyToOne(
+     *      targetEntity="App\Entity\SensorType",
+     *      inversedBy="sensors",
+     *      cascade={"all"},
+     *  )
+     * @ORM\JoinColumns({
+     *      @ORM\JoinColumn(
+     *          name="sensor_type_id",
+     *          referencedColumnName="id",
+     *          onDelete="CASCADE"
+     *      ),
+     *  })
+     */
+    private $sensorType;
 
     /**
      * Sensor name.
@@ -237,15 +257,13 @@ class Sensor implements EntityInterface
     }
 
     /**
-     * Set sensor_type_id
-     *
-     * @param string $sensorType
+     * @param SensorType $sensorType
      *
      * @return Sensor
      */
-    public function setSensorType(string $sensorType): Sensor
+    public function setSensorType(SensorType $sensorType): Sensor
     {
-        $this->name = $sensorType;
+        $this->sensorType = $sensorType;
 
         return $this;
     }

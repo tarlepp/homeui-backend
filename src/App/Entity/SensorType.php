@@ -56,12 +56,6 @@ class SensorType implements EntityInterface
      *  })
      * @JMS\Type("string")
      *
-     * @ORM\OneToMany(
-     *      targetEntity="App\Entity\Sensor",
-     *      mappedBy="sensor_type_id",
-     *      cascade={"all"},
-     *  )
-     *
      * @ORM\Column(
      *      name="id",
      *      type="guid",
@@ -80,8 +74,7 @@ class SensorType implements EntityInterface
      *      "SensorType",
      *      "SensorType.name",
      *  })
-     * @JMS\Type("ArrayCollection<App\Entity\SensorType>")
-     * @JMS\XmlList(entry = "SensorType")
+     * @JMS\Type("string")
      *
      * @ORM\Column(
      *      name="name",
@@ -121,8 +114,7 @@ class SensorType implements EntityInterface
      *      "SensorType",
      *      "SensorType.unit",
      *  })
-     * @JMS\Type("ArrayCollection<App\Entity\SensorType>")
-     * @JMS\XmlList(entry = "SensorType")
+     * @JMS\Type("string")
      *
      * @ORM\Column(
      *      name="unit",
@@ -133,13 +125,30 @@ class SensorType implements EntityInterface
     private $unit;
 
     /**
+     * @var ArrayCollection<SensorData>
+     *
+     * @JMS\Groups({
+     *      "Sensor.datas",
+     *  })
+     * @JMS\Type("ArrayCollection<App\Entity\SensorData>")
+     * @JMS\XmlList(entry = "sensordata")
+     *
+     * @ORM\OneToMany(
+     *      targetEntity="App\Entity\Sensor",
+     *      mappedBy="sensortype",
+     *      cascade={"all"},
+     *  )
+     */
+    private $sensors;
+
+    /**
      * User constructor.
      */
     public function __construct()
     {
         $this->id = Uuid::uuid4()->toString();
 
-        $this->SensorType = new ArrayCollection();
+        $this->sensors = new ArrayCollection();
     }
 
     /**

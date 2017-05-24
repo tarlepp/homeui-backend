@@ -77,15 +77,12 @@ class SensorCommand extends Base {
             // Store entity to database
             $serviceSensorType->save($sensorType);
 
-            // And detach entity from entity manager
-            $serviceSensorType->getEntityManager()->detach($sensorType);
-
             // Iterate source data
             foreach ($this->getQueryResults("Select * From Sensor WHERE Sensor_Type_ID=".$typeRow['ID']."") as $row) {
 
                 // Create new Sensor entity
                 $sensor = new Sensor();
-                $sensor->setSensorType($sensorType->getId());
+                $sensor->setSensorType($sensorType);
                 $sensor->setName($row['Name']);
                 $sensor->setDescription($row['Description']);
                 $sensor->setIp($row['IP']);
@@ -112,14 +109,17 @@ class SensorCommand extends Base {
 
                 }
 
-                // And detach entity from entity manager
-                $serviceSensor->getEntityManager()->detach($sensor);
-
-                // And detach entity from entity manager
-                $serviceSensorData->getEntityManager()->detach($sensorData);
-
                 $count++;
             }
+
+            // And detach entity from entity manager
+            $serviceSensorType->getEntityManager()->detach($sensorType);
+
+            // And detach entity from entity manager
+            $serviceSensor->getEntityManager()->detach($sensor);
+
+            // And detach entity from entity manager
+            $serviceSensorData->getEntityManager()->detach($sensorData);
 
         }
         $this->progress->finish();
