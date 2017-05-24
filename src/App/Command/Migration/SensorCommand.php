@@ -91,6 +91,10 @@ class SensorCommand extends Base {
                 $sensor->setIp($row['IP']);
                 $sensor->setSnmpOid($row['Snmp_oid']);
 
+                // Store entity to database
+                $serviceSensor->save($sensor);
+
+
                 // test
 
                 foreach ($this->getQueryResults("Select ID,Value,Stamp From Sensor_Data WHERE Sensor_ID=".$row['ID']."") as $dataRow) {
@@ -104,18 +108,15 @@ class SensorCommand extends Base {
                     // Store entity to database
                     $serviceSensorData->save($sensorData);
 
-                    // And detach entity from entity manager
-                    $serviceSensorData->getEntityManager()->detach($sensorData);
-
                     $this->progress->advance();
 
                 }
 
-                // Store entity to database
-                $serviceSensor->save($sensor);
-
                 // And detach entity from entity manager
                 $serviceSensor->getEntityManager()->detach($sensor);
+
+                // And detach entity from entity manager
+                $serviceSensorData->getEntityManager()->detach($sensorData);
 
                 $count++;
             }

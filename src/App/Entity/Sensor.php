@@ -68,29 +68,6 @@ class Sensor implements EntityInterface
      */
     private $id;
 
-    /**
-     * Sensor sensor_type_id.
-     *
-     * @var string
-     *
-     * @JMS\Groups({
-     *      "Default",
-     *      "Sensor",
-     *      "Sensor.sensor_type_id",
-     *      "set.DTO",
-     *  })
-     * @JMS\Type("string")
-     *
-     * @Assert\NotBlank()
-     * @Assert\NotNull()
-     *
-     * @ORM\Column(
-     *      name="sensor_type_id",
-     *      type="guid",
-     *      nullable=false,
-     *  )
-     */
-    private $sensorType;
 
     /**
      * Sensor name.
